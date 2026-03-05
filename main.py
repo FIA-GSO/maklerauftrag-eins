@@ -37,6 +37,7 @@ class MaklerAuftrag():
                 break
             if len(values) > 2:
                 print("Bitte zwei Werte Eingeben")
+                continue
             try:
                 self.wohnung[name].append((float(values[0]), float(values[1])))
             except (IndexError, ValueError):
