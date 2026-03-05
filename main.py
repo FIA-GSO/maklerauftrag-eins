@@ -1,7 +1,7 @@
-"""implementation of the Maklerauftrag"""
+"""Implementation eines Maklerauftrags zur Berechnung von Wohnflächen."""
 
 class MaklerAuftrag():
-    """maklerauftrag class"""
+    """Klasse zur Verwaltung von Räumen und zur Berechnung der Wohnfläche."""
     def __init__(self):
         # struktur:
         # {
@@ -12,16 +12,16 @@ class MaklerAuftrag():
         self.wohnung = {}
 
     def calculate_room_area(self, name) -> float:
-        """calculates area of a single room"""
+        """Berechnet die Fläche eines einzelnen Raumes."""
         pairs = self.wohnung.get(name, [])
         return sum(a * b for a, b in pairs)
 
     def calculate_total_area(self) -> float:
-        """calculates the total area"""
+        """Berechnet die Gesamtfläche aller Räume."""
         return sum(self.calculate_room_area(name) for name in self.wohnung)
 
     def create_new_room(self, name):
-        """creates new room"""
+        """Erstellt einen neuen Raum und erlaubt das Eingeben von Seitenpaaren."""
 
         if name in self.wohnung:
             print("Raum existiert schon")
@@ -45,7 +45,8 @@ class MaklerAuftrag():
         print(f"Neuen Raum erstellt: {name} {self.wohnung[name]}\n")
 
     def delete_room(self, name):
-        """deletes room"""
+        """Löscht einen bestehenden Raum aus der Wohnung."""
+
         if name not in self.wohnung:
             print("Raum existiert nicht\n")
             return
@@ -54,7 +55,8 @@ class MaklerAuftrag():
         print(f"Raum gelöscht: {name}\n")
 
     def list_rooms(self):
-        """lists all rooms"""
+
+        """Listet alle Räume mit ihren Flächen und Teilflächen auf."""
         if not self.wohnung:
             print("Keine Räume hizugefügt\n")
             return
@@ -66,34 +68,60 @@ class MaklerAuftrag():
                 print("  Keine Werte hinzugefügt")
             else:
                 for i, (a, b) in enumerate(pairs, 1):
-                    print(f" {i}: {a} * {b} = {a*b}")
-                print(f"Raum Fläche: {self.calculate_room_area(name)}\n")
+                    print(f" {i}: {a}m * {b}m = {a*b}m²")
+                print(f"Raum Fläche: {self.calculate_room_area(name)}m²\n")
 
-        print(f"Gesamtfläche: {self.calculate_total_area()}\n")
+        print(f"Gesamtfläche: {self.calculate_total_area()}m²\n")
 
     def run(self):
-        """main method"""
+        """Startet das Kommandozeilen-Interface des Programms."""
 
-        print("""Willkommen
-              """)
+        print("""
+Maklerauftrag - Wohnflächenverwaltung
+
+Verfügbare Befehle:
+  new <raumname>     Erstellt einen neuen Raum. Danach können Seitenpaare
+                     (z.B. "3 4") eingegeben werden. Mit "done" beenden.
+  delete <raumname>  Löscht einen Raum.
+  list               Zeigt alle Räume und deren Flächen.
+  help               Zeigt diese Hilfe.
+  done               Beendet das Programm.
+
+Beim Hinzufügen eines Raumes können mehrere Rechtecke eingegeben werden,
+deren Flächen zur Gesamtfläche des Raumes addiert werden.
+""")
 
         while True:
             userinput = input().split()
             if not userinput:
                 continue
 
-            if userinput[0] == "new":
-                if len(userinput) == 2:
-                    self.create_new_room(userinput[1])
-            elif userinput[0] == "delete":
-                if len(userinput) == 2:
-                    self.delete_room(userinput[1])
-            elif userinput[0] == "list":
-                if len(userinput) == 1:
-                    self.list_rooms()
-            elif userinput[0] == "done":
-                if len(userinput) == 1:
-                    return
+            if userinput[0] == "new" and len(userinput) == 2:
+                self.create_new_room(userinput[1])
+            elif userinput[0] == "delete" and len(userinput) == 2:
+                self.delete_room(userinput[1])
+            elif userinput[0] == "list" and len(userinput) == 1:
+                self.list_rooms()
+            elif userinput[0] == "done" and len(userinput) == 1:
+                return
+            elif userinput[0] == "help" and len(userinput) == 1:
+                print("""
+Hilfe:
 
-dings = MaklerAuftrag()
-dings.run()
+new <raumname>
+    Erstellt einen neuen Raum. Danach können Maße eingegeben werden
+    (z.B. "3 5"). Mit "done" wird die Eingabe beendet.
+
+delete <raumname>
+    Entfernt einen vorhandenen Raum.
+
+list
+    Zeigt alle Räume mit ihren Teilflächen und der Gesamtfläche.
+
+done
+    Beendet das Programm.
+""")
+
+if __name__ == "__main__":
+    makler = MaklerAuftrag()
+    makler.run()
