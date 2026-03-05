@@ -23,6 +23,20 @@ class MaklerAuftrag():
     def create_new_room(self, name):
         """Erstellt einen neuen Raum und erlaubt das Eingeben von Seitenpaaren."""
 
+        print(f"""
+Neuen Raum erstellen: {name}
+
+Geben Sie Seitenpaare für Rechtecke ein, aus denen der Raum besteht.
+Format: <länge> <breite>
+
+Beispiele:
+  3 4
+  5 2.5
+
+Jede Eingabe wird als Teilfläche gespeichert.
+Geben Sie 'done' ein, um die Eingabe zu beenden.
+""")
+
         if name in self.wohnung:
             print("Raum existiert schon")
             return
